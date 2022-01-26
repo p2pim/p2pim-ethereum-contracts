@@ -250,8 +250,8 @@ blockchain/keystore/**
 blockchain/history
 
 #truffle
-yarn.lock
-package-lock.json
+# yarn.lock
+# package-lock.json
 
 ### VisualStudioCode ###
 .vscode/*
