@@ -23,6 +23,7 @@
     "!/contracts/mocks/**/*"
   ],
   "license": "MIT",
+  "name": "p2pim-ethereum-contracts",
   "scripts": {
     "compile": "truffle compile",
     "coverage": "truffle run coverage && istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
@@ -33,5 +34,6 @@
     "lint:sol": "solhint 'contracts/**/*.sol' && prettier -c 'contracts/**/*.sol'",
     "lint:sol:fix": "prettier --write \"contracts/**/*.sol\"",
     "test": "truffle test"
-  }
+  },
+  "version": "0.1.0"
 }
