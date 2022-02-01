@@ -1,3 +1,9 @@
+# Run test && coverage
+
+```
+npm run coverage
+```
+
 # Deploy to Ropsten
 
 ```
