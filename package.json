@@ -1,4 +1,5 @@
 {
+  "author": "Fernando Rincon Martin <f.rincon@protonmail.com>",
   "devDependencies": {
     "@openzeppelin/contracts": "^4.3.2",
     "@truffle/hdwallet-provider": "^2.0.1",
@@ -21,6 +22,7 @@
     "/build/contracts/*.json",
     "!/contracts/mocks/**/*"
   ],
+  "license": "MIT",
   "scripts": {
     "compile": "truffle compile",
     "coverage": "truffle run coverage && istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
