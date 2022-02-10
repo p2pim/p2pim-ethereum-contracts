@@ -12,4 +12,4 @@ INFURA_MNEMONIC="nmemonic" INFURA_PROJECT_SECRET="secret" INFURA_PROJECT_ID="id"
 
 ## License
 
-OpenZeppelin Contracts is released under the [MIT License](LICENSE).
+P2pim Contracts is released under the [MIT License](LICENSE).
