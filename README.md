@@ -1,6 +1,9 @@
 ## Run test && coverage
 
 ```
+# start ganache in another window
+npx ganache-cli
+# then run coverage
 npm run coverage
 ```
 
