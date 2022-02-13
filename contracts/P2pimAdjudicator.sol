@@ -7,40 +7,38 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 contract P2pimAdjudicator {
   using SafeERC20 for IERC20;
 
-  event Deposited(address indexed user, address asset, uint256 amount);
+  event Deposited(address indexed user, uint256 amount);
 
-  event Withdrawn(address indexed user, address asset, uint256 amount);
+  event Withdrawn(address indexed user, uint256 amount);
 
-  mapping(address => mapping(address => uint256)) public holdings;
+  mapping(address => uint256) public holdings;
 
-  function deposit(
-    address asset,
-    uint256 amount,
-    address onBehalfOf
-  ) external payable {
-    require(amount > 0, "Incorrect amount for deposit");
+  IERC20 public immutable token;
 
-    IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
-
-    uint256 held = holdings[onBehalfOf][asset];
-    uint256 nowHeld = held + amount;
-    holdings[onBehalfOf][asset] = nowHeld;
-    emit Deposited(onBehalfOf, asset, amount);
+  constructor(address _token) {
+    token = IERC20(_token);
   }
 
-  function withdraw(
-    address asset,
-    uint256 amount,
-    address toAddress
-  ) external {
+  function deposit(uint256 amount, address onBehalfOf) external payable {
+    require(amount > 0, "Incorrect amount for deposit");
+
+    token.safeTransferFrom(msg.sender, address(this), amount);
+
+    uint256 held = holdings[onBehalfOf];
+    uint256 nowHeld = held + amount;
+    holdings[onBehalfOf] = nowHeld;
+    emit Deposited(onBehalfOf, amount);
+  }
+
+  function withdraw(uint256 amount, address toAddress) external {
     require(amount > 0, "Incorrect amount for withdraw");
-    uint256 held = holdings[msg.sender][asset];
+    uint256 held = holdings[msg.sender];
     require(amount <= held, "Not enough holdings");
 
-    IERC20(asset).safeTransfer(toAddress, amount);
+    token.safeTransfer(toAddress, amount);
 
     uint256 nowHeld = held - amount;
-    holdings[msg.sender][asset] = nowHeld;
-    emit Withdrawn(msg.sender, asset, amount);
+    holdings[msg.sender] = nowHeld;
+    emit Withdrawn(msg.sender, amount);
   }
 }
