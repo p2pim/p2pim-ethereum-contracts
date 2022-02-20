@@ -4,7 +4,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
-const { assert } = require('chai')
+const { assert, expect } = require('chai')
 const truffleAssert = require('truffle-assertions')
 
 contract('P2pimMasterRecord', async accounts => {
@@ -49,12 +49,16 @@ contract('P2pimMasterRecord', async accounts => {
       assert(result.length === 2)
     })
 
-    it('should not allow register duplicated token', async () => {
+    it('should override a already deployed token', async () => {
       const instance = await P2pimMasterRecord.new()
 
       await instance.registerDeployment(mockTokenAddress, mockAddress)
+      await instance.registerDeployment(mockTokenAddress, mockAddress2)
 
-      await instance.registerDeployment(mockTokenAddress, mockAddress2).should.be.rejectedWith('Adjudicator for the same token has already been deployed')
+      const result = await instance.deployments.call()
+      expect(result.length).equals(1)
+      expect(result[0].token).equals(mockTokenAddress)
+      expect(result[0].adjudicator).equals(mockAddress2)
     })
 
     it('should only allow creator to register deployments', async () => {

@@ -21,9 +21,12 @@ contract P2pimMasterRecord {
     require(msg.sender == _creator, "Only creator can register deployments");
     for (uint256 index = 0; index < _deployments.length; index++) {
       if (_deployments[index].token == token) {
-        revert("Adjudicator for the same token has already been deployed");
+        _deployments[index] = P2pimAdjudicatorDeployment(token, adjudicator);
+        emit Deployed(token, adjudicator);
+        return;
       }
     }
+
     _deployments.push(P2pimAdjudicatorDeployment(token, adjudicator));
     emit Deployed(token, adjudicator);
   }
