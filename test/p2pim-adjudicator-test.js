@@ -5,6 +5,7 @@ require('chai')
   .use(require('chai-as-promised'))
   .should()
 
+const { expect } = require('chai')
 const truffleAssert = require('truffle-assertions')
 
 contract('P2pimAdjudicator', async accounts => {
@@ -86,6 +87,34 @@ contract('P2pimAdjudicator', async accounts => {
       await instance.deposit(transferAmount, accounts[0])
 
       await instance.withdraw(withdrawAmount, accounts[1]).should.be.rejectedWith('Not enough holdings')
+    })
+  })
+  describe('balance', async () => {
+    it('should return 0 when no deposits', async () => {
+      const initialSupply = 100
+
+      const erc20 = await P2pimTestERC20.new('P2pimTestERC20', 'P2PIM', initialSupply, accounts[0])
+      const instance = await P2pimAdjudicator.new(erc20.address)
+
+      const balance = await instance.balance.call(accounts[0])
+      expect(balance.available).to.equal('0')
+    })
+    it('should return the deposited value', async () => {
+      const initialSupply = 100
+      const allowance = 99999
+      const transferAmount = 10
+      const withdrawAmount = transferAmount - 3
+
+      const erc20 = await P2pimTestERC20.new('P2pimTestERC20', 'P2PIM', initialSupply, accounts[0])
+      const instance = await P2pimAdjudicator.new(erc20.address)
+
+      await erc20.approve(instance.address, allowance)
+
+      await instance.deposit(transferAmount, accounts[0])
+      await instance.withdraw(withdrawAmount, accounts[0])
+
+      const balance = await instance.balance.call(accounts[0])
+      expect(balance.available).to.equal('3')
     })
   })
 })

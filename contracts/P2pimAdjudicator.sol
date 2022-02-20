@@ -19,6 +19,10 @@ contract P2pimAdjudicator {
     token = IERC20(_token);
   }
 
+  struct Balance {
+    uint256 available;
+  }
+
   function deposit(uint256 amount, address onBehalfOf) external payable {
     require(amount > 0, "Incorrect amount for deposit");
 
@@ -40,5 +44,10 @@ contract P2pimAdjudicator {
     uint256 nowHeld = held - amount;
     holdings[msg.sender] = nowHeld;
     emit Withdrawn(msg.sender, amount);
+  }
+
+  function balance(address holder) public view returns (Balance memory) {
+    uint256 held = holdings[holder];
+    return Balance(held);
   }
 }
