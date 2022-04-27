@@ -25,8 +25,10 @@
   "license": "MIT",
   "name": "p2pim-ethereum-contracts",
   "scripts": {
+    "clean-contracts": "truffle networks --clean",
     "compile": "truffle compile",
     "coverage": "truffle run coverage && istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
+    "ganache-local-development": "ganache-cli --wallet.seed local_development",
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:fix": "npm run lint:js:fix && npm run lint:sol:fix",
     "lint:js": "eslint --ignore-path .gitignore .",
