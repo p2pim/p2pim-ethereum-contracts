@@ -1,0 +1,11 @@
+[package]
+name = "p2pim-ethereum-contracts"
+version = "0.3.0"
+authors = ["Fernando Rincon <f.rincon@protonmail.com>"]
+edition = "2021"
+
+[lib]
+path = "rust/lib.rs"
+
+[dependencies]
+ethcontract = "0.17.0"
