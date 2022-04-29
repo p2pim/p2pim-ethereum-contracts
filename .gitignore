@@ -276,3 +276,5 @@ blockchain/history
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,node,solidity,soliditytruffle,rust
+
+.idea/
