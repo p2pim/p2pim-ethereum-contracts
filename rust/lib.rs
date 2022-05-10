@@ -1,4 +1,3 @@
-
 ethcontract::contract!(
     pub "build/contracts/P2pimMasterRecord.json",
     mod = master_record,
