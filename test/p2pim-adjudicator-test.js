@@ -116,5 +116,66 @@ contract('P2pimAdjudicator', async accounts => {
       const balance = await instance.balance.call(accounts[0])
       expect(balance.available).to.equal('3')
     })
+    it('should have into account rents', async () => {
+      const initialSupply = 100000000
+      const allowance = 100000000
+      const transferAmount = 99999
+
+      const web3 = P2pimAdjudicator.web3
+
+      const erc20 = await P2pimTestERC20.new('P2pimTestERC20', 'P2PIM', initialSupply, accounts[0])
+      const instance = await P2pimAdjudicator.new(erc20.address)
+
+      const lessee = accounts[1]
+      const lessor = accounts[2]
+      await erc20.approve(instance.address, allowance)
+      await instance.deposit(transferAmount, lessee)
+      await instance.deposit(transferAmount, lessor)
+
+      const leaseDeal = {
+        lessee: lessee,
+        lessor: lessor,
+        nonce: Math.round(Math.random() * Number.MAX_SAFE_INTEGER),
+        merkleRoot: web3.utils.keccak256('test'),
+        sizeBytes: 5,
+        price: 10000,
+        penalty: 500,
+        leaseDuration: 86400,
+        lastValidSealTs: Date.now() + 100000
+      }
+
+      const abiEncoded = web3.eth.abi.encodeParameters(
+        ['address',
+          {
+            ParentStruct: {
+              lessee: 'address',
+              lessor: 'address',
+              nonce: 'uint64',
+              merkleRoot: 'bytes32',
+              sizeBytes: 'uint64',
+              price: 'uint256',
+              penalty: 'uint256',
+              leaseDuration: 'uint256',
+              lastValidSealTs: 'uint256'
+            }
+          }],
+        [erc20.address, leaseDeal]
+      )
+
+      const messageHash = web3.utils.keccak256(abiEncoded)
+      const lesseeSignature = await web3.eth.sign(messageHash, lessee)
+      const lessorSignature = await web3.eth.sign(messageHash, lessor)
+
+      await instance.sealLease(leaseDeal, lesseeSignature, lessorSignature)
+      const lesseeBalance = await instance.balance(lessee)
+      expect(lesseeBalance.available).to.eq('89999')
+      expect(lesseeBalance.lockedRents).to.eq('10000')
+      expect(lesseeBalance.lockedPenalties).to.eq('0')
+
+      const lessorBalance = await instance.balance(lessor)
+      expect(lessorBalance.available).to.eq('99499')
+      expect(lessorBalance.lockedRents).to.eq('0')
+      expect(lessorBalance.lockedPenalties).to.eq('500')
+    })
   })
 })
