@@ -19,4 +19,4 @@ module.exports = async function (deployer, network, accounts) {
   //   await deployer.deploy(P2pimAdjudicator, p2pim.address)
   //   await masterInstance.registerDeployment(p2pim.address, P2pimAdjudicator.address)
   // }
-}
+};

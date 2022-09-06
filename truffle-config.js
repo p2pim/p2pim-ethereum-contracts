@@ -18,9 +18,9 @@
  *
  */
 
-const HDWalletProvider = require('@truffle/hdwallet-provider')
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-const mnemonic = process.env.INFURA_MNEMONIC
+const mnemonic = process.env.INFURA_MNEMONIC;
 
 module.exports = {
   /**
@@ -119,4 +119,4 @@ module.exports = {
   //   }
   // }
   // }
-}
+};

@@ -10,4 +10,4 @@ module.exports = async function (deployer, network) {
   //   await instance.registerDeployment(weenus, '0xA56487250F5EAb1fFED1bCa65c2FF114A497d1B6')
   //   await instance.registerDeployment(xeenus, '0xd6dd276F4999457E0A5824fB883D41950c55b6D7')
   // }
-}
+};
