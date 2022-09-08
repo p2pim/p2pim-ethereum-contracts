@@ -10,6 +10,8 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.2.32",
     "prettier": "^2.5.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.6",
@@ -37,5 +39,7 @@
     "lint:sol:fix": "prettier --write \"contracts/**/*.sol\"",
     "test": "truffle test"
   },
-  "version": "0.4.0"
+  "version": "0.4.0",
+  "dependencies": {
+  }
 }

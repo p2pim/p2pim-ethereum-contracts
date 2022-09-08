@@ -17,6 +17,7 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "semi": [2, "always"]
+        "semi": [2, "always"],
+        "max-len": [2, { "code": 100, "tabWidth": 2}]
     }
 }
